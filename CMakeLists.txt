@@ -16,6 +16,8 @@ set(libs
         glm
 )
 
-add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} ${libs})
+set(LESSON_TARGET lesson01)
+
+add_executable(${LESSON_TARGET} src/lesson01/main.cpp)
+target_link_libraries(${LESSON_TARGET} ${libs})
 

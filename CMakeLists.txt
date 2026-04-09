@@ -25,11 +25,18 @@ target_link_libraries(${LESSON_TARGET} ${libs})
 ########### LESSON 2 ##############
 set(LESSON_TARGET lesson02)
 set(LESSON_DIR src/${LESSON_TARGET})
-add_executable(${LESSON_TARGET} ${LESSON_DIR}/main.cpp
-#        ${LESSON_DIR}/shader_utils.cpp
+
+FILE(GLOB_RECURSE LESSON_SRC
+        ${LESSON_DIR}/*.cpp
+        ${LESSON_DIR}/*.h
+)
+#MESSAGE("====" ${LESSON_SRC})
+
+add_executable(${LESSON_TARGET}
+        ${LESSON_SRC}
 )
 target_link_libraries(${LESSON_TARGET} ${libs})
-#target_include_directories(${LESSON_TARGET} PRIVATE LESSON_DIR)
+target_include_directories(${LESSON_TARGET} PRIVATE ${LESSON_DIR})
 
 add_custom_command(  # Копіює ресурси з папки src/res у build директорію
         TARGET ${LESSON_TARGET} POST_BUILD

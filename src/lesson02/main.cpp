@@ -1,6 +1,22 @@
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+
+std::string LoadShaderFromFile(const std::string &filePath) {
+    std::ifstream shaderFile(filePath);
+    if (!shaderFile.is_open()) {
+        std::cerr << "Не вдалося відкрити файл: " << filePath << std::endl;
+        return "";
+    }
+
+    std::stringstream buffer;
+    buffer << shaderFile.rdbuf(); // зчитує весь вміст файлу в потік
+
+    return buffer.str(); // повертає як std::string
+}
 
 int main(void)
 {
@@ -33,28 +49,37 @@ int main(void)
 
     glClearColor(1.0, 0.0, 0.0, 1.0);
 
-    auto vertexShaderCode = R"(
-        #version 330 core
-
-        layout(location = 0) in vec4 aPos;
-
-        void main() {
-            gl_Position = aPos;
-        }
-    )";
+//     auto vertexShaderCode = R"(
+//         #version 330 core
+//
+//         layout(location = 0) in vec4 aPos;
+//
+//         void main() {
+//             gl_Position = aPos
+//         }
+//     )";
+    std::string vertexShaderName = "res/shaders/triangle.vert";
+    std::string fragmentShaderName = "res/shaders/triangle.frag";
+    auto vertexShaderCode_str = LoadShaderFromFile(vertexShaderName);
+    auto vertexShaderCode= vertexShaderCode_str.c_str();
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
     glCompileShader(vertexShader);
 
-    auto fragmentShaderCode = R"(
-        #version 330 core
-        out vec4 FragColor;
 
-        void main() {
-            FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
-       }
-    )";
+//     auto fragmentShaderCode = R"(
+//         #version 330 core
+//         out vec4 FragColor;
+//
+//         void main() {
+//             FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
+//        }
+//     )";
+
+    std::string fragmentShaderCode_str = LoadShaderFromFile(fragmentShaderName);
+    const char* fragmentShaderCode = fragmentShaderCode_str.c_str();
+
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);

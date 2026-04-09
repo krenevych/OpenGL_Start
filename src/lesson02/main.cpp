@@ -7,19 +7,6 @@
 #include "shader_utils.h"
 
 
-// std::string LoadShaderFromFile(const std::string &filePath) {
-//     std::ifstream shaderFile(filePath);
-//     if (!shaderFile.is_open()) {
-//         std::cerr << "Не вдалося відкрити файл: " << filePath << std::endl;
-//         return "";
-//     }
-//
-//     std::stringstream buffer;
-//     buffer << shaderFile.rdbuf(); // зчитує весь вміст файлу в потік
-//
-//     return buffer.str(); // повертає як std::string
-// }
-
 int main(void)
 {
     GLFWwindow* window;
@@ -49,6 +36,7 @@ int main(void)
         return -1;
     }
 
+
     glClearColor(1.0, 0.0, 0.0, 1.0);
 
 //     auto vertexShaderCode = R"(
@@ -62,39 +50,9 @@ int main(void)
 //     )";
     std::string vertexShaderName = "res/shaders/triangle.vert";
     std::string fragmentShaderName = "res/shaders/triangle.frag";
-    auto vertexShaderCode_str = LoadShaderFromFile(vertexShaderName);
-    auto vertexShaderCode= vertexShaderCode_str.c_str();
 
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
-    glCompileShader(vertexShader);
-
-
-//     auto fragmentShaderCode = R"(
-//         #version 330 core
-//         out vec4 FragColor;
-//
-//         void main() {
-//             FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
-//        }
-//     )";
-
-    std::string fragmentShaderCode_str = LoadShaderFromFile(fragmentShaderName);
-    const char* fragmentShaderCode = fragmentShaderCode_str.c_str();
-
-
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
-    glCompileShader(fragmentShader);
-
-    // Програма з шейдерів
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    GLuint shaderProgram = createProgram(vertexShaderName,
+        fragmentShaderName);
 
     float vertices[] = {  // float* vertices
         -0.5f, -0.5f,

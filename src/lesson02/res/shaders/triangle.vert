@@ -7,5 +7,5 @@ out vec3 color;  // вихідний параметр, який передаєм
 
 void main() {
     gl_Position = aPos;
-//    color = aColor;
+    color = aColor;
 }

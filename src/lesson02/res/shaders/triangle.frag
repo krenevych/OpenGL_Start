@@ -5,6 +5,6 @@ in vec3 color;
 out vec4 FragColor;
 
 void main() {
-    FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
-//    FragColor = vec4(color, 1.0);  // інтерпольований колір з атрибутів
+//    FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
+    FragColor = vec4(color, 1.0);  // інтерпольований колір з атрибутів
 }

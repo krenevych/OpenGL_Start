@@ -73,9 +73,6 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind = activate
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_color); // bind = activate
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
     GLuint posAttribLocation = glGetAttribLocation(shaderProgram, "aPos");
     glVertexAttribPointer(
         // 0,                  // location - 0
@@ -88,6 +85,8 @@ int main(void)
     );
     glEnableVertexAttribArray(posAttribLocation);
 
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_color); // bind = activate
+    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
     GLuint colorAttribLocation = glGetAttribLocation(shaderProgram, "aColor");
     glVertexAttribPointer(
         colorAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері

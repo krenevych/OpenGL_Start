@@ -16,7 +16,7 @@ set(libs
         glm
 )
 
-########### LESSON 2 ##############
+########### LESSON 1 ##############
 set(LESSON_TARGET lesson01)
 set(LESSON_DIR src/${LESSON_TARGET})
 add_executable(${LESSON_TARGET} ${LESSON_DIR}/main.cpp)

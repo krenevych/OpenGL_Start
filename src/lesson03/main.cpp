@@ -46,26 +46,15 @@ int main(void)
         fragmentShaderName);
 
     float vertices[] = {  // float* vertices
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-          0.f,  0.5f,
+       /* position */ -0.5f, -0.5f, /*color: */ 1.0f, 0.0f, 0.0f, // червоний колір для першої вершини
+       /* position */  0.5f, -0.5f, /*color: */ 0.0f, 1.0f, 0.0f, // зелений колір для другої вершини
+       /* position */   0.f,  0.5f, /*color: */ 0.0f, 0.0f, 1.0f, // синій колір для третьої вершини
     };
-
-
-    float colors[] = {
-        // буфер кольорів вершин трикутника
-        1.0f, 0.0f, 0.0f, // червоний колір для першої вершини
-        0.0f, 1.0f, 0.0f, // зелений колір для другої вершини
-        0.0f, 0.0f, 1.0f, // синій колір для третьої вершини
-    };
-
 
     GLuint VBO; // data - ідентифікатор для даних - місток CPU та GPU
-    GLuint VBO_color; // data - ідентифікатор для даних - місток CPU та GPU
     GLuint VAO; // vertex array object
 
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &VBO_color);
     glGenVertexArrays(1, &VAO);
 
     glBindVertexArray(VAO);
@@ -75,26 +64,23 @@ int main(void)
 
     GLuint posAttribLocation = glGetAttribLocation(shaderProgram, "aPos");
     glVertexAttribPointer(
-        // 0,                  // location - 0
         posAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
         2,                  // 2 компоненти: x, y
         GL_FLOAT,           // тип даних
         GL_FALSE,           // не нормалізувати
-        2 * sizeof(float),  // stride: 2 float-а на вершину
+        5 * sizeof(float),  // stride: 5 float-а на вершину
         (void*)0            // offset: починаємо з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_color); // bind = activate
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
     GLuint colorAttribLocation = glGetAttribLocation(shaderProgram, "aColor");
     glVertexAttribPointer(
         colorAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
         3,                  // 3 компоненти: r, g, b
         GL_FLOAT,           // тип даних
         GL_FALSE,           // не нормалізувати
-        3 * sizeof(float),  // stride: 3 float-а на вершину
-        (void*)0            // offset: починаємо з 0
+        5 * sizeof(float),  // stride: 5 float-а на вершину
+        (void*)(2 * sizeof(float))        // offset: починаємо з 2
     );
     glEnableVertexAttribArray(colorAttribLocation);
 
@@ -122,7 +108,6 @@ int main(void)
     } while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE));
 
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &VBO_color);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
 

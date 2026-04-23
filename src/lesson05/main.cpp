@@ -46,6 +46,7 @@ int main(void)
         fragmentShaderName);
 
     GLint colorUniformPos = glGetUniformLocation(shaderProgram, "uColor");
+    GLint shiftUniformPos = glGetUniformLocation(shaderProgram, "uShift");
 
     float vertices[] = {
         -0.5f, -0.5f,     //  0
@@ -102,9 +103,9 @@ int main(void)
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
         glUniform4f(colorUniformPos, 0.0f, 0.0f, 1.0f, 1.0f);
+        glUniform4f(shiftUniformPos, 0.3f, 0.0f,0.f, 0.0f);
         glBindVertexArray(VAO);
 
         // glDrawArrays(GL_TRIANGLES, 0, 3);

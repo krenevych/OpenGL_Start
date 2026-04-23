@@ -48,11 +48,12 @@ int main(void)
 
     GLint colorUniformPos = glGetUniformLocation(shaderProgram, "uColor");
     GLint shiftUniformPos = glGetUniformLocation(shaderProgram, "uShift");
+    GLint texture_loc = glGetUniformLocation(shaderProgram, "uTexture");
 
     float vertices[] = {
         /* координати */  -0.5f, -0.5f,  /* тестурні координати */  0.0f, 0.0f,  //  0
         /* координати */   0.5f, -0.5f,  /* тестурні координати */  1.0f, 0.0f, // 1
-        /* координати */   0.5f, 0.5f,   /* тестурні координати */  1.0f, 0.0f, // 2
+        /* координати */   0.5f, 0.5f,   /* тестурні координати */  1.0f, 1.0f, // 2
         /* координати */  -0.5f, 0.5f,   /* тестурні координати */  0.0f, 1.0f, // 3
     };
 
@@ -61,10 +62,8 @@ int main(void)
         0, 2, 3, // другий трикутник
     };
 
-
     GLuint VBO, indexBuffer; // data - ідентифікатор для даних - місток CPU та GPU
     GLuint VAO; // vertex array object
-
 
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &indexBuffer);
@@ -102,7 +101,7 @@ int main(void)
 
     glBindVertexArray(0); // деактивувати VAO
 
-    unsigned int texture = loadTexture("res/textures/girl.jpg");
+    unsigned int texture = loadTexture("res/textures/house.jpg");
 
     /* Loop until the user closes the window */
     do
@@ -110,8 +109,11 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
-        glUniform4f(colorUniformPos, 0.0f, 0.0f, 1.0f, 1.0f);
-        glUniform4f(shiftUniformPos, 0.3f, 0.0f,0.f, 0.0f);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glUniform1i(texture_loc, 0);
+
         glBindVertexArray(VAO);
 
         // glDrawArrays(GL_TRIANGLES, 0, 3);

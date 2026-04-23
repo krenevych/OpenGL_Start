@@ -1,10 +1,12 @@
 #version 330 core
 
-//in vec3 color;
-uniform vec4 uColor;
+in vec2 vTexCoords;
+
+uniform sampler2D uTexture;
 
 out vec4 FragColor;
 
 void main() {
-    FragColor = uColor;  // колір отриманий з юніформи
+    vec4 color = texture(uTexture, vTexCoords);
+    FragColor = color;  // колір отриманий з текстури
 }

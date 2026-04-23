@@ -1,8 +1,9 @@
 #version 330 core
 
 in vec4 aPos;
-uniform vec4 uShift;
+in vec2 aUV;
+
 
 void main() {
-    gl_Position = aPos + uShift;
+    gl_Position = aPos;
 }

@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "shader_utils.h"
+#include "texture.h"
 
 
 int main(void)
@@ -49,10 +50,10 @@ int main(void)
     GLint shiftUniformPos = glGetUniformLocation(shaderProgram, "uShift");
 
     float vertices[] = {
-        -0.5f, -0.5f,     //  0
-         0.5f, -0.5f,     // 1
-         0.5f, 0.5f,      // 2
-        -0.5f, 0.5f,      // 3
+        /* координати */  -0.5f, -0.5f,  /* тестурні координати */  0.0f, 0.0f,  //  0
+        /* координати */   0.5f, -0.5f,  /* тестурні координати */  1.0f, 0.0f, // 1
+        /* координати */   0.5f, 0.5f,   /* тестурні координати */  1.0f, 0.0f, // 2
+        /* координати */  -0.5f, 0.5f,   /* тестурні координати */  0.0f, 1.0f, // 3
     };
 
     unsigned int indices[] = {
@@ -83,20 +84,25 @@ int main(void)
         2,                  // 2 компоненти: x, y
         GL_FLOAT,           // тип даних
         GL_FALSE,           // не нормалізувати
-        2 * sizeof(float),  // stride: 2 float-а на вершину
+        4 * sizeof(float),  // stride: 2 float-а на вершину
         (void*)0            // offset: починаємо з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
 
+    GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
+    glVertexAttribPointer(
+        textureCoordsAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
+        2,                  // 2 компоненти: u, v
+        GL_FLOAT,           // тип даних
+        GL_FALSE,           // не нормалізувати
+        4 * sizeof(float),  // stride: 4 float-а на вершину
+        (void*)(2 * sizeof(float))        // offset: починаємо з 2
+    );
+    glEnableVertexAttribArray(textureCoordsAttribLocation);
+
     glBindVertexArray(0); // деактивувати VAO
 
-    // phi = pi / 3
-    // cos_phi = cos(phi)
-    // sin_phi = cos(phi)
-// M = {
-//      cos_phi  -sin_phi
-//      sin_phi   cos_phi
-//      }
+    unsigned int texture = loadTexture("res/textures/girl.jpg");
 
     /* Loop until the user closes the window */
     do
@@ -121,7 +127,7 @@ int main(void)
     glDeleteBuffers(1, &indexBuffer);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
-
+    glDeleteTextures(1, &texture);
 
     glfwTerminate();
     return 0;

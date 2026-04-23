@@ -1,10 +1,10 @@
 #version 330 core
 
-in vec3 color;
+//in vec3 color;
+uniform vec4 uColor;
 
 out vec4 FragColor;
 
 void main() {
-//    FragColor = vec4(0.0, 1.0, 0.0, 1.0);  // зелений
-    FragColor = vec4(color, 1.0);  // інтерпольований колір з атрибутів
+    FragColor = uColor;  // колір отриманий з юніформи
 }

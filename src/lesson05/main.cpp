@@ -45,17 +45,13 @@ int main(void)
         vertexShaderName,
         fragmentShaderName);
 
-    // float vertices[] = {  // float* vertices
-    //    /* position */ -0.5f, -0.5f, /*color: */ 1.0f, 0.0f, 0.0f, // червоний колір для першої вершини
-    //    /* position */  0.5f, -0.5f, /*color: */ 0.0f, 1.0f, 0.0f, // зелений колір для другої вершини
-    //    /* position */   0.f,  0.5f, /*color: */ 0.0f, 0.0f, 1.0f, // синій колір для третьої вершини
-    // };
+    GLint colorUniformPos = glGetUniformLocation(shaderProgram, "uColor");
 
     float vertices[] = {
-        -0.5f, -0.5f, /*color: */ 1.0f, 0.0f, 0.0f, // червоний колір для першої вершини    //  0
-         0.5f, -0.5f,  /*color: */ 0.0f, 1.0f, 0.0f, // зелений колір для другої вершини     // 1
-         0.5f, 0.5f,   /*color: */ 0.0f, 0.0f, 1.0f, // синій колір для третьої вершини      // 2
-        -0.5f, 0.5f,  /*color: */ 0.0f, 1.0f, 0.0f, // зелений колір для другої вершини   // 3
+        -0.5f, -0.5f,     //  0
+         0.5f, -0.5f,     // 1
+         0.5f, 0.5f,      // 2
+        -0.5f, 0.5f,      // 3
     };
 
     unsigned int indices[] = {
@@ -86,23 +82,20 @@ int main(void)
         2,                  // 2 компоненти: x, y
         GL_FLOAT,           // тип даних
         GL_FALSE,           // не нормалізувати
-        5 * sizeof(float),  // stride: 5 float-а на вершину
+        2 * sizeof(float),  // stride: 2 float-а на вершину
         (void*)0            // offset: починаємо з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
 
-    GLuint colorAttribLocation = glGetAttribLocation(shaderProgram, "aColor");
-    glVertexAttribPointer(
-        colorAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-        3,                  // 3 компоненти: r, g, b
-        GL_FLOAT,           // тип даних
-        GL_FALSE,           // не нормалізувати
-        5 * sizeof(float),  // stride: 5 float-а на вершину
-        (void*)(2 * sizeof(float))        // offset: починаємо з 2
-    );
-    glEnableVertexAttribArray(colorAttribLocation);
     glBindVertexArray(0); // деактивувати VAO
 
+    // phi = pi / 3
+    // cos_phi = cos(phi)
+    // sin_phi = cos(phi)
+// M = {
+//      cos_phi  -sin_phi
+//      sin_phi   cos_phi
+//      }
 
     /* Loop until the user closes the window */
     do
@@ -111,7 +104,9 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
+        glUniform4f(colorUniformPos, 0.0f, 0.0f, 1.0f, 1.0f);
         glBindVertexArray(VAO);
+
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         /* Swap front and back buffers */

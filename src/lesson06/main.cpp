@@ -40,8 +40,8 @@ int main(void)
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
-    std::string vertexShaderName = "res/shaders/triangle.vert";
-    std::string fragmentShaderName = "res/shaders/triangle.frag";
+    std::string vertexShaderName = "res/shaders/rect.vert";
+    std::string fragmentShaderName = "res/shaders/rect.frag";
     GLuint shaderProgram = createProgram(
         vertexShaderName,
         fragmentShaderName);

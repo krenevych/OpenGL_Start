@@ -48,7 +48,7 @@ int main(void)
 
     GLint colorUniformPos = glGetUniformLocation(shaderProgram, "uColor");
     GLint shiftUniformPos = glGetUniformLocation(shaderProgram, "uShift");
-    GLint texture_loc = glGetUniformLocation(shaderProgram, "uTexture");
+
 
     float vertices[] = {
         /* координати */  -0.5f, -0.5f,  /* тестурні координати */  0.0f, 0.0f,  //  0
@@ -101,7 +101,13 @@ int main(void)
 
     glBindVertexArray(0); // деактивувати VAO
 
-    unsigned int texture = loadTexture("res/textures/house.jpg");
+    unsigned int texture0 = loadTexture("res/textures/0.jpeg");
+    unsigned int texture1 = loadTexture("res/textures/1.jpeg");
+    unsigned int texture2 = loadTexture("res/textures/2.jpeg");
+
+    GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
+    GLint texture1_loc = glGetUniformLocation(shaderProgram, "uTexture1");
+    GLint texture2_loc = glGetUniformLocation(shaderProgram, "uTexture2");
 
     /* Loop until the user closes the window */
     do
@@ -111,8 +117,16 @@ int main(void)
         glUseProgram(shaderProgram);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glUniform1i(texture_loc, 0);
+        glBindTexture(GL_TEXTURE_2D, texture0);
+        glUniform1i(texture0_loc, 0);
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glUniform1i(texture1_loc, 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+        glUniform1i(texture2_loc, 2);
 
         glBindVertexArray(VAO);
 
@@ -129,7 +143,7 @@ int main(void)
     glDeleteBuffers(1, &indexBuffer);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
-    glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &texture0);
 
     glfwTerminate();
     return 0;

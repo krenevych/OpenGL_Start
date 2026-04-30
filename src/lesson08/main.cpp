@@ -8,6 +8,9 @@
 #include "texture.h"
 
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 int main(void)
 {
     GLFWwindow* window;
@@ -36,7 +39,7 @@ int main(void)
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
+    glfwSwapInterval(1);  // синхронізує рендер-цикл з частотою екрану
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -108,9 +111,19 @@ int main(void)
     GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
     GLint texture1_loc = glGetUniformLocation(shaderProgram, "uTexture1");
     GLint texture2_loc = glGetUniformLocation(shaderProgram, "uTexture2");
+    GLint t_loc = glGetUniformLocation(shaderProgram, "uT");
+    GLint transform_loc = glGetUniformLocation(shaderProgram, "uTransformation");
+
 
     float t = 0.0f;
-    float deltaTime = 0.01f;
+    float deltaTime = 1.0f / 60.0f;
+
+    auto transformation = glm::mat4(1.0f);
+
+    // model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+    // model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    // model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+
 
     /* Loop until the user closes the window */
     do
@@ -124,6 +137,8 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
+        glUniform1f(t_loc, t);
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture0);
         glUniform1i(texture0_loc, 0);
@@ -136,8 +151,11 @@ int main(void)
         glBindTexture(GL_TEXTURE_2D, texture2);
         glUniform1i(texture2_loc, 2);
 
-        glBindVertexArray(VAO);
+        transformation = glm::rotate(transformation, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(transform_loc, 1, GL_FALSE, glm::value_ptr(transformation));
 
+
+        glBindVertexArray(VAO);
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         /* Swap front and back buffers */

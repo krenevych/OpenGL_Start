@@ -54,15 +54,43 @@ int main(void)
 
 
     float vertices[] = {
-        /* координати */  -0.5f, -0.5f,  /* тестурні координати */  0.0f, 0.0f,  //  0
-        /* координати */   0.5f, -0.5f,  /* тестурні координати */  1.0f, 0.0f, // 1
-        /* координати */   0.5f, 0.5f,   /* тестурні координати */  1.0f, 1.0f, // 2
-        /* координати */  -0.5f, 0.5f,   /* тестурні координати */  0.0f, 1.0f, // 3
+
+        /* позиції */  0.0f,  0.0f, 0.0f, /* кольори */ 1.0f, 0.0f, 0.0f, /* текстурні координати */ 0.0, 0.0, // вершгина 0
+        /* позиції */  1.0f,  0.0f, 0.0f, /* кольори */ 0.0f, 1.0f, 0.0f, /* текстурні координати */ 1.0, 0.0, // вершгина 1
+        /* позиції */  1.0f,  1.0f, 0.0f, /* кольори */ 0.0f, 0.0f, 1.0f, /* текстурні координати */ 1.0, 1.0, // вершгина 2
+        /* позиції */  0.0f,  1.0f, 0.0f, /* кольори */ 1.0f, 0.0f, 1.0f, /* текстурні координати */ 0.0, 1.0, // вершгина 3
+
+        /* позиції */  0.0f,  0.0f, 1.0f, /* кольори */ 1.0f, 0.0f, 0.0f, /* текстурні координати */ 0.0, 0.0, // вершгина 0
+        /* позиції */  1.0f,  0.0f, 1.0f, /* кольори */ 0.0f, 1.0f, 0.0f, /* текстурні координати */ 1.0, 0.0, // вершгина 1
+        /* позиції */  1.0f,  1.0f, 1.0f, /* кольори */ 0.0f, 0.0f, 1.0f, /* текстурні координати */ 1.0, 1.0, // вершгина 2
+        /* позиції */  0.0f,  1.0f, 1.0f, /* кольори */ 1.0f, 0.0f, 1.0f, /* текстурні координати */ 0.0, 1.0, // вершгина 3
+
     };
 
     unsigned int indices[] = {
-        0, 1, 2, // перший трикутник
-        0, 2, 3, // другий трикутник
+        // передня грань (z = 0)
+        0, 1, 2,
+        2, 3, 0,
+
+        // задня грань (z = 1)
+        4, 5, 6,
+        6, 7, 4,
+
+        // ліва грань (x = 0)
+        0, 3, 7,
+        7, 4, 0,
+
+        // права грань (x = 1)
+        1, 5, 6,
+        6, 2, 1,
+
+        // нижня грань (y = 0)
+        0, 1, 5,
+        5, 4, 0,
+
+        // верхня грань (y = 1)
+        3, 2, 6,
+        6, 7, 3
     };
 
     GLuint VBO, indexBuffer; // data - ідентифікатор для даних - місток CPU та GPU
@@ -83,35 +111,35 @@ int main(void)
     GLuint posAttribLocation = glGetAttribLocation(shaderProgram, "aPos");
     glVertexAttribPointer(
         posAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-        2,                  // 2 компоненти: x, y
+        3,                  // 3 компоненти: x, y, z
         GL_FLOAT,           // тип даних
         GL_FALSE,           // не нормалізувати
-        4 * sizeof(float),  // stride: 2 float-а на вершину
+        8 * sizeof(float),  // stride: 5 float-а на вершину
         (void*)0            // offset: починаємо з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
 
-    GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
-    glVertexAttribPointer(
-        textureCoordsAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-        2,                  // 2 компоненти: u, v
-        GL_FLOAT,           // тип даних
-        GL_FALSE,           // не нормалізувати
-        4 * sizeof(float),  // stride: 4 float-а на вершину
-        (void*)(2 * sizeof(float))        // offset: починаємо з 2
-    );
-    glEnableVertexAttribArray(textureCoordsAttribLocation);
+    // GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
+    // glVertexAttribPointer(
+    //     textureCoordsAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
+    //     2,                  // 2 компоненти: u, v
+    //     GL_FLOAT,           // тип даних
+    //     GL_FALSE,           // не нормалізувати
+    //     4 * sizeof(float),  // stride: 4 float-а на вершину
+    //     (void*)(2 * sizeof(float))        // offset: починаємо з 2
+    // );
+    // glEnableVertexAttribArray(textureCoordsAttribLocation);
 
     glBindVertexArray(0); // деактивувати VAO
 
-    unsigned int texture0 = loadTexture("res/textures/0.jpeg");
-    unsigned int texture1 = loadTexture("res/textures/1.jpeg");
-    unsigned int texture2 = loadTexture("res/textures/2.jpeg");
-
-    GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
-    GLint texture1_loc = glGetUniformLocation(shaderProgram, "uTexture1");
-    GLint texture2_loc = glGetUniformLocation(shaderProgram, "uTexture2");
-    GLint t_loc = glGetUniformLocation(shaderProgram, "uT");
+    // unsigned int texture0 = loadTexture("res/textures/0.jpeg");
+    // unsigned int texture1 = loadTexture("res/textures/1.jpeg");
+    // unsigned int texture2 = loadTexture("res/textures/2.jpeg");
+    //
+    // GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
+    // GLint texture1_loc = glGetUniformLocation(shaderProgram, "uTexture1");
+    // GLint texture2_loc = glGetUniformLocation(shaderProgram, "uTexture2");
+    // GLint t_loc = glGetUniformLocation(shaderProgram, "uT");
     GLint transform_loc = glGetUniformLocation(shaderProgram, "uTransformation");
 
 
@@ -123,6 +151,7 @@ int main(void)
     // model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
     // model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     // model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+
 
 
     /* Loop until the user closes the window */
@@ -137,19 +166,19 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
-        glUniform1f(t_loc, t);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0);
-        glUniform1i(texture0_loc, 0);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1);
-        glUniform1i(texture1_loc, 1);
-
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, texture2);
-        glUniform1i(texture2_loc, 2);
+        // glUniform1f(t_loc, t);
+        //
+        // glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_2D, texture0);
+        // glUniform1i(texture0_loc, 0);
+        //
+        // glActiveTexture(GL_TEXTURE1);
+        // glBindTexture(GL_TEXTURE_2D, texture1);
+        // glUniform1i(texture1_loc, 1);
+        //
+        // glActiveTexture(GL_TEXTURE2);
+        // glBindTexture(GL_TEXTURE_2D, texture2);
+        // glUniform1i(texture2_loc, 2);
 
         transformation = glm::rotate(transformation, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         glUniformMatrix4fv(transform_loc, 1, GL_FALSE, glm::value_ptr(transformation));
@@ -169,7 +198,7 @@ int main(void)
     glDeleteBuffers(1, &indexBuffer);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
-    glDeleteTextures(1, &texture0);
+    // glDeleteTextures(1, &texture0);
 
     glfwTerminate();
     return 0;

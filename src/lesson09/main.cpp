@@ -190,7 +190,7 @@ int main(void)
     auto model = glm::mat4(1.0f);
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(0.0f, 1.5f, 4.0f), // позиція камери
+        glm::vec3(0.0f, 1.5f, -4.0f), // позиція камери
         glm::vec3(0.0f, 0.0f, 0.0f), // куди дивимось
         glm::vec3(0.0f, 1.0f, 0.0f) // вектор вгору
     );
@@ -202,6 +202,13 @@ int main(void)
         100.0f
     );
 
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    // glCullFace(GL_FRONT);
+    // glFrontFace(GL_CCW); // GL_CW.
+    // glFrontFace(GL_CW); // GL_CW.
+
+
     /* Loop until the user closes the window */
     do
     {
@@ -211,11 +218,11 @@ int main(void)
         }
 
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // очищаємо не лише полотно, на якому малюємо, але й буфер глибини
         glUseProgram(shaderProgram);
 
 
-        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(projection));

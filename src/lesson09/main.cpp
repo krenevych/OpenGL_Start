@@ -23,9 +23,10 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
+    auto width = 1280;
+    auto height = 720;
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Hello World", NULL, NULL);
     if (!window)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -119,40 +120,40 @@ int main(void)
     );
     glEnableVertexAttribArray(posAttribLocation);
 
-    // GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
-    // glVertexAttribPointer(
-    //     textureCoordsAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-    //     2,                  // 2 компоненти: u, v
-    //     GL_FLOAT,           // тип даних
-    //     GL_FALSE,           // не нормалізувати
-    //     4 * sizeof(float),  // stride: 4 float-а на вершину
-    //     (void*)(2 * sizeof(float))        // offset: починаємо з 2
-    // );
-    // glEnableVertexAttribArray(textureCoordsAttribLocation);
+    GLuint colorAttribLocation = glGetAttribLocation(shaderProgram, "aColor");
+    glVertexAttribPointer(
+        colorAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
+        3,                  // 3 компоненти: r, g, b,
+        GL_FLOAT,           // тип даних
+        GL_FALSE,           // не нормалізувати
+        8 * sizeof(float),  // stride: 4 float-а на вершину
+        (void*)(3 * sizeof(float))        // offset: починаємо з 2
+    );
+    glEnableVertexAttribArray(colorAttribLocation);
 
     glBindVertexArray(0); // деактивувати VAO
 
-    // unsigned int texture0 = loadTexture("res/textures/0.jpeg");
-    // unsigned int texture1 = loadTexture("res/textures/1.jpeg");
-    // unsigned int texture2 = loadTexture("res/textures/2.jpeg");
-    //
-    // GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
-    // GLint texture1_loc = glGetUniformLocation(shaderProgram, "uTexture1");
-    // GLint texture2_loc = glGetUniformLocation(shaderProgram, "uTexture2");
-    // GLint t_loc = glGetUniformLocation(shaderProgram, "uT");
-    GLint transform_loc = glGetUniformLocation(shaderProgram, "uTransformation");
-
+    GLint model_loc = glGetUniformLocation(shaderProgram, "uModel");
+    GLint view_loc = glGetUniformLocation(shaderProgram, "uView");
+    GLint proj_loc = glGetUniformLocation(shaderProgram, "uProjection");
 
     float t = 0.0f;
     float deltaTime = 1.0f / 60.0f;
 
-    auto transformation = glm::mat4(1.0f);
+    auto model = glm::mat4(1.0f);
 
-    // model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-    // model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    // model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(0.0f, 1.5f, 4.0f), // позиція камери
+        glm::vec3(0.0f, 0.0f, 0.0f), // куди дивимось
+        glm::vec3(0.0f, 1.0f, 0.0f) // вектор вгору
+    );
 
-
+    glm::mat4 projection = glm::perspective(
+        glm::radians(45.0f),
+        (float)width / (float)height,
+        0.1f,
+        100.0f
+    );
 
     /* Loop until the user closes the window */
     do
@@ -166,27 +167,15 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
 
-        // glUniform1f(t_loc, t);
-        //
-        // glActiveTexture(GL_TEXTURE0);
-        // glBindTexture(GL_TEXTURE_2D, texture0);
-        // glUniform1i(texture0_loc, 0);
-        //
-        // glActiveTexture(GL_TEXTURE1);
-        // glBindTexture(GL_TEXTURE_2D, texture1);
-        // glUniform1i(texture1_loc, 1);
-        //
-        // glActiveTexture(GL_TEXTURE2);
-        // glBindTexture(GL_TEXTURE_2D, texture2);
-        // glUniform1i(texture2_loc, 2);
 
-        transformation = glm::rotate(transformation, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        glUniformMatrix4fv(transform_loc, 1, GL_FALSE, glm::value_ptr(transformation));
+        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
 
         glBindVertexArray(VAO);
-        // glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 

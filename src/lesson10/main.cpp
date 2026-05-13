@@ -5,8 +5,6 @@
 #include <GLFW/glfw3.h>
 
 #include "shader_utils.h"
-#include "texture.h"
-
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -24,7 +22,7 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     auto width = 1280;
-    auto height =920;
+    auto height = 920;
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "Cube", NULL, NULL);
     if (!window)
@@ -50,43 +48,43 @@ int main(void)
         vertexShaderName,
         fragmentShaderName);
 
-    // Формат на вершину: position(3) + normal(3) + texCoords(2) = 8 floats
+    // Формат на вершину: position(3) + normal(3) = 6 floats
     float vertices[] = {
         // -------- Передня грань (нормаль: 0, 0, -1) --------
-        -1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
-         1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
-        -1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    0.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,
 
         // -------- Задня грань (нормаль: 0, 0, 1) --------
-        -1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
-        -1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 1.0f,
+        -1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,
 
         // -------- Ліва грань (нормаль: -1, 0, 0) --------
-        -1.0f, -1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-        -1.0f,  1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,    0.0f, 1.0f,
-        -1.0f,  1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-        -1.0f, -1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+        -1.0f, -1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,
+        -1.0f,  1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,
+        -1.0f,  1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,
+        -1.0f, -1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,
 
         // -------- Права грань (нормаль: 1, 0, 0) --------
-         1.0f, -1.0f, -1.0f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,    1.0f,  0.0f,  0.0f,    0.0f, 1.0f,
-         1.0f,  1.0f,  1.0f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-         1.0f, -1.0f,  1.0f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+         1.0f, -1.0f, -1.0f,    1.0f,  0.0f,  0.0f,
+         1.0f,  1.0f, -1.0f,    1.0f,  0.0f,  0.0f,
+         1.0f,  1.0f,  1.0f,    1.0f,  0.0f,  0.0f,
+         1.0f, -1.0f,  1.0f,    1.0f,  0.0f,  0.0f,
 
         // -------- Нижня грань (нормаль: 0, -1, 0) --------
-        -1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
-        -1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,    0.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,
+        -1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,
+         1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,
+         1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,
 
         // -------- Верхня грань (нормаль: 0, 1, 0) --------
-        -1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f,
-        -1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,    0.0f, 1.0f,
+        -1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,
+         1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,
+         1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,
+        -1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,
     };
 
     unsigned int indices[] = {
@@ -98,8 +96,8 @@ int main(void)
        20,22,21,   22,20,23        // верхня
     };
 
-    GLuint VBO, indexBuffer; // data - ідентифікатор для даних - місток CPU та GPU
-    GLuint VAO; // vertex array object
+    GLuint VBO, indexBuffer;
+    GLuint VAO;
 
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &indexBuffer);
@@ -110,11 +108,11 @@ int main(void)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind = activate
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // stride: 8 float-ів на вершину (3 позиція + 3 нормаль + 2 текстура)
-    const int STRIDE = 8 * sizeof(float);
+    // stride: 6 float-ів на вершину (3 позиція + 3 нормаль)
+    const int STRIDE = 6 * sizeof(float);
 
     GLuint posAttribLocation = glGetAttribLocation(shaderProgram, "aPos");
     glVertexAttribPointer(
@@ -122,7 +120,7 @@ int main(void)
         3,                          // 3 компоненти: x, y, z
         GL_FLOAT,                   // тип даних
         GL_FALSE,                   // не нормалізувати
-        STRIDE,                     // stride: 8 float-ів на вершину
+        STRIDE,                     // stride: 6 float-ів на вершину
         (void*)0                    // offset: позиція починається з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
@@ -133,21 +131,10 @@ int main(void)
         3,                          // 3 компоненти: nx, ny, nz
         GL_FLOAT,                   // тип даних
         GL_FALSE,                   // не нормалізувати
-        STRIDE,                     // stride: 8 float-ів на вершину
+        STRIDE,                     // stride: 6 float-ів на вершину
         (void*)(3 * sizeof(float))  // offset: нормаль після 3 float-ів позиції
     );
     glEnableVertexAttribArray(normalAttribLocation);
-
-    GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
-    glVertexAttribPointer(
-        textureCoordsAttribLocation,        // позиція атрибуту у шейдері
-        2,                                  // 2 компоненти: u, v
-        GL_FLOAT,                           // тип даних
-        GL_FALSE,                           // не нормалізувати
-        STRIDE,                             // stride: 8 float-ів на вершину
-        (void*)(6 * sizeof(float))          // offset: UV після 3+3 float-ів
-    );
-    glEnableVertexAttribArray(textureCoordsAttribLocation);
 
     glBindVertexArray(0); // деактивувати VAO
 
@@ -155,14 +142,16 @@ int main(void)
     GLint view_loc  = glGetUniformLocation(shaderProgram, "uView");
     GLint proj_loc  = glGetUniformLocation(shaderProgram, "uProjection");
 
-    // Uniform-локації для напрямленого світла (Phong)
-    GLint lightDir_loc          = glGetUniformLocation(shaderProgram, "uLightDir");
-    GLint lightColor_loc        = glGetUniformLocation(shaderProgram, "uLightColor");
-    GLint ambientStrength_loc   = glGetUniformLocation(shaderProgram, "uAmbientStrength");
-    GLint diffuseStrength_loc   = glGetUniformLocation(shaderProgram, "uDiffuseStrength");
-    GLint specularStrength_loc  = glGetUniformLocation(shaderProgram, "uSpecularStrength");
-    GLint shininess_loc         = glGetUniformLocation(shaderProgram, "uShininess");
-    GLint viewPos_loc           = glGetUniformLocation(shaderProgram, "uViewPos");
+    // Uniform-локації для напрямленого світла
+    GLint lightDir_loc   = glGetUniformLocation(shaderProgram, "uLightDir");
+    GLint lightColor_loc = glGetUniformLocation(shaderProgram, "uLightColor");
+    GLint viewPos_loc    = glGetUniformLocation(shaderProgram, "uViewPos");
+
+    // Uniform-локації для матеріалу
+    GLint materialAmbient_loc  = glGetUniformLocation(shaderProgram, "uMaterialAmbient");
+    GLint materialDiffuse_loc  = glGetUniformLocation(shaderProgram, "uMaterialDiffuse");
+    GLint materialSpecular_loc = glGetUniformLocation(shaderProgram, "uMaterialSpecular");
+    GLint shininess_loc        = glGetUniformLocation(shaderProgram, "uShininess");
 
     float t = 0.0f;
     float deltaTime = 1.0f / 60.0f;
@@ -172,9 +161,9 @@ int main(void)
     glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, -5.0f);
 
     glm::mat4 view = glm::lookAt(
-        cameraPos,                   // позиція камери
+        cameraPos,                    // позиція камери
         glm::vec3(0.0f, 0.0f, 0.0f), // куди дивимось
-        glm::vec3(0.0f, 1.0f, 0.0f) // вектор вгору
+        glm::vec3(0.0f, 1.0f, 0.0f)  // вектор вгору
     );
 
     glm::mat4 projection = glm::perspective(
@@ -187,28 +176,27 @@ int main(void)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    unsigned int texture0 = loadTexture("res/textures/brick.jpg");
-    GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
-
-    // Параметри напрямленого світла (задаємо один раз)
+    // Параметри напрямленого світла
     glm::vec3 lightDir   = glm::normalize(glm::vec3(-1.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
-    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                   // біле світло
-    float ambientStrength  = 0.15f;  // фонова складова
-    float diffuseStrength  = 0.714f;   // дифузна складова
-    float specularStrength = 0.6f;   // дзеркальна складова
-    float shininess        = 32.0f;  // показник блиску
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                  // біле світло
+
+    // Матеріал: Brass (латунь) — http://devernay.free.fr/cours/opengl/materials.html
+    glm::vec3 materialAmbient  = glm::vec3(0.329412f, 0.223529f, 0.027451f);
+    glm::vec3 materialDiffuse  = glm::vec3(0.780392f, 0.568627f, 0.113725f);
+    glm::vec3 materialSpecular = glm::vec3(0.992157f, 0.941176f, 0.807843f);
+    float     shininess        = 0.21794872f * 128.0f;  // = 27.9f
 
     glUseProgram(shaderProgram);
     glUniform3fv(lightDir_loc,          1, glm::value_ptr(lightDir));
     glUniform3fv(lightColor_loc,        1, glm::value_ptr(lightColor));
-    glUniform1f(ambientStrength_loc,    ambientStrength);
-    glUniform1f(diffuseStrength_loc,    diffuseStrength);
-    glUniform1f(specularStrength_loc,   specularStrength);
-    glUniform1f(shininess_loc,          shininess);
     glUniform3fv(viewPos_loc,           1, glm::value_ptr(cameraPos));
+    glUniform3fv(materialAmbient_loc,   1, glm::value_ptr(materialAmbient));
+    glUniform3fv(materialDiffuse_loc,   1, glm::value_ptr(materialDiffuse));
+    glUniform3fv(materialSpecular_loc,  1, glm::value_ptr(materialSpecular));
+    glUniform1f(shininess_loc,          shininess);
 
-    bool isPaused     = false;   // чи зупинена анімація
-    bool prevPKeyDown = false;   // попередній стан клавіші P (для детекції одиночного натискання)
+    bool isPaused     = false;  // чи зупинена анімація
+    bool prevPKeyDown = false;  // попередній стан клавіші P (для детекції одиночного натискання)
 
     /* Loop until the user closes the window */
     do
@@ -226,24 +214,20 @@ int main(void)
         prevPKeyDown = currPKeyDown;
 
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // очищаємо не лише полотно, на якому малюємо, але й буфер глибини
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glUseProgram(shaderProgram);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0);
-        glUniform1i(texture0_loc, 0);
 
         // Обертаємо куб лише якщо анімація не на паузі
         if (!isPaused) {
             model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(projection));
-
+        glUniformMatrix4fv(view_loc,  1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(proj_loc,  1, GL_FALSE, glm::value_ptr(projection));
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(unsigned int), GL_UNSIGNED_INT, 0);
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
@@ -255,7 +239,6 @@ int main(void)
     glDeleteBuffers(1, &indexBuffer);
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
-    glDeleteTextures(1, &texture0);
 
     glfwTerminate();
     return 0;

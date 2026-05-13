@@ -2,9 +2,7 @@
 
 in vec3 aPos;
 in vec3 aNormal;
-in vec2 aUV;
 
-out vec2 vTexCoords;
 out vec3 vNormal;      // нормаль у світовому просторі
 out vec3 vFragPos;     // позиція фрагмента у світовому просторі
 
@@ -13,9 +11,6 @@ uniform mat4 uView;
 uniform mat4 uProjection;
 
 void main() {
-    vTexCoords = aUV;
-    vTexCoords.y = 1.0 - vTexCoords.y;
-
     // Трансформуємо позицію у світовий простір
     vec4 worldPos = uModel * vec4(aPos, 1.0);
     vFragPos = vec3(worldPos);

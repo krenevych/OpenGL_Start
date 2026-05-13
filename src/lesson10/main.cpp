@@ -40,7 +40,8 @@ int main(void)
     }
     glfwSwapInterval(1);  // синхронізує рендер-цикл з частотою екрану
 
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    // glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 
     std::string vertexShaderName = "res/shaders/cube.vert";
     std::string fragmentShaderName = "res/shaders/cube.frag";
@@ -180,11 +181,41 @@ int main(void)
     glm::vec3 lightDir   = glm::normalize(glm::vec3(-1.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                  // біле світло
 
+    // Матеріал: copper — http://devernay.free.fr/cours/opengl/materials.html
+    glm::vec3 materialAmbient = glm::vec3(0.19125, 0.0735, 0.0225);
+    glm::vec3 materialDiffuse = glm::vec3(0.7038, 0.27048, 0.0828);
+    glm::vec3 materialSpecular = glm::vec3(0.256777, 0.137622, 0.086014);
+    float     shininess        = 0.1f * 128.0f;  // = 27.9f
+
+    // // Матеріал: silver — http://devernay.free.fr/cours/opengl/materials.html
+    // glm::vec3 materialAmbient = glm::vec3(0.19225	,0.19225	,0.19225);
+    // glm::vec3 materialDiffuse = glm::vec3(0.50754	,0.50754	,0.50754);
+    // glm::vec3 materialSpecular = glm::vec3(0.508273	,0.508273,	0.508273);
+    // float     shininess        = 0.4f * 128.0f;  // = 27.9f
+
+    // Матеріал: gold — http://devernay.free.fr/cours/opengl/materials.html
+    // glm::vec3 materialAmbient = glm::vec3(0.24725,	0.1995	,0.0745);
+    // glm::vec3 materialDiffuse = glm::vec3(0.75164,	0.60648	,0.22648);
+    // glm::vec3 materialSpecular = glm::vec3(0.628281,	0.555802,	0.366065);
+    // float     shininess        = 0.4f * 128.0f;  // = 27.9f
+
+    // Матеріал: obsidian (obsidian) — http://devernay.free.fr/cours/opengl/materials.html
+    // glm::vec3 materialAmbient = glm::vec3(0.05375, 0.05, 0.06625);
+    // glm::vec3 materialDiffuse = glm::vec3(0.18275, 0.17, 0.22525);
+    // glm::vec3 materialSpecular = glm::vec3(0.332741, 0.328634, 0.346435);
+    // float     shininess        = 0.3f * 128.0f;  // = 27.9f
+
+    // Матеріал: бронза (bronze) — http://devernay.free.fr/cours/opengl/materials.html
+    // glm::vec3 materialAmbient = glm::vec3(0.2125, 0.1275, 0.054);
+    // glm::vec3 materialDiffuse = glm::vec3(0.714, 0.4284, 0.18144);
+    // glm::vec3 materialSpecular = glm::vec3(0.393548, 0.271906, 0.166721);
+    // float     shininess        = 0.2f * 128.0f;  // = 27.9f
+
     // Матеріал: Brass (латунь) — http://devernay.free.fr/cours/opengl/materials.html
-    glm::vec3 materialAmbient  = glm::vec3(0.329412f, 0.223529f, 0.027451f);
-    glm::vec3 materialDiffuse  = glm::vec3(0.780392f, 0.568627f, 0.113725f);
-    glm::vec3 materialSpecular = glm::vec3(0.992157f, 0.941176f, 0.807843f);
-    float     shininess        = 0.21794872f * 128.0f;  // = 27.9f
+    // glm::vec3 materialAmbient  = glm::vec3(0.329412f, 0.223529f, 0.027451f);
+    // glm::vec3 materialDiffuse  = glm::vec3(0.780392f, 0.568627f, 0.113725f);
+    // glm::vec3 materialSpecular = glm::vec3(0.992157f, 0.941176f, 0.807843f);
+    // float     shininess        = 0.21794872f * 128.0f;  // = 27.9f
 
     glUseProgram(shaderProgram);
     glUniform3fv(lightDir_loc,          1, glm::value_ptr(lightDir));

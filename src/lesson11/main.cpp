@@ -24,7 +24,7 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     auto width = 1280;
-    auto height =920;
+    auto height =720;
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "Cube", NULL, NULL);
     if (!window)
@@ -219,7 +219,7 @@ int main(void)
         }
 
         // Перемикання паузи по клавіші P / p (спрацьовує лише на момент натискання)
-        bool currPKeyDown = glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS;
+        bool currPKeyDown = glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
         if (currPKeyDown && !prevPKeyDown) {
             isPaused = !isPaused;
         }

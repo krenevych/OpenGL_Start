@@ -13,6 +13,7 @@ uniform vec3 uLightColor;   // колір/інтенсивність світл�
 
 // Компоненти Phong-моделі
 uniform float uAmbientStrength;     // сила амбієнтного освітлення
+uniform float uDiffuseStrength;     // сила дифузного відбиття
 uniform float uSpecularStrength;    // сила дзеркального відбиття
 uniform float uShininess;           // показник блиску (чим більше — тим вужче пляма)
 
@@ -31,7 +32,7 @@ void main() {
     vec3 norm     = normalize(vNormal);
     vec3 lightDir = normalize(-uLightDir);          // напрямок ДО джерела
     float diff    = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse  = diff * uLightColor;
+    vec3 diffuse  = uDiffuseStrength * diff * uLightColor;
 
     // --- Specular (дзеркальне відбиття, Phong) ---
     vec3 viewDir    = normalize(uViewPos - vFragPos);

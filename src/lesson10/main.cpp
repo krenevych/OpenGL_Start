@@ -156,12 +156,13 @@ int main(void)
     GLint proj_loc  = glGetUniformLocation(shaderProgram, "uProjection");
 
     // Uniform-локації для напрямленого світла (Phong)
-    GLint lightDir_loc         = glGetUniformLocation(shaderProgram, "uLightDir");
-    GLint lightColor_loc       = glGetUniformLocation(shaderProgram, "uLightColor");
-    GLint ambientStrength_loc  = glGetUniformLocation(shaderProgram, "uAmbientStrength");
-    GLint specularStrength_loc = glGetUniformLocation(shaderProgram, "uSpecularStrength");
-    GLint shininess_loc        = glGetUniformLocation(shaderProgram, "uShininess");
-    GLint viewPos_loc          = glGetUniformLocation(shaderProgram, "uViewPos");
+    GLint lightDir_loc          = glGetUniformLocation(shaderProgram, "uLightDir");
+    GLint lightColor_loc        = glGetUniformLocation(shaderProgram, "uLightColor");
+    GLint ambientStrength_loc   = glGetUniformLocation(shaderProgram, "uAmbientStrength");
+    GLint diffuseStrength_loc   = glGetUniformLocation(shaderProgram, "uDiffuseStrength");
+    GLint specularStrength_loc  = glGetUniformLocation(shaderProgram, "uSpecularStrength");
+    GLint shininess_loc         = glGetUniformLocation(shaderProgram, "uShininess");
+    GLint viewPos_loc           = glGetUniformLocation(shaderProgram, "uViewPos");
 
     float t = 0.0f;
     float deltaTime = 1.0f / 60.0f;
@@ -193,16 +194,18 @@ int main(void)
     glm::vec3 lightDir   = glm::normalize(glm::vec3(-1.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                   // біле світло
     float ambientStrength  = 0.15f;  // фонова складова
+    float diffuseStrength  = 0.714f;   // дифузна складова
     float specularStrength = 0.6f;   // дзеркальна складова
     float shininess        = 32.0f;  // показник блиску
 
     glUseProgram(shaderProgram);
-    glUniform3fv(lightDir_loc,         1, glm::value_ptr(lightDir));
-    glUniform3fv(lightColor_loc,       1, glm::value_ptr(lightColor));
-    glUniform1f(ambientStrength_loc,   ambientStrength);
-    glUniform1f(specularStrength_loc,  specularStrength);
-    glUniform1f(shininess_loc,         shininess);
-    glUniform3fv(viewPos_loc,          1, glm::value_ptr(cameraPos));
+    glUniform3fv(lightDir_loc,          1, glm::value_ptr(lightDir));
+    glUniform3fv(lightColor_loc,        1, glm::value_ptr(lightColor));
+    glUniform1f(ambientStrength_loc,    ambientStrength);
+    glUniform1f(diffuseStrength_loc,    diffuseStrength);
+    glUniform1f(specularStrength_loc,   specularStrength);
+    glUniform1f(shininess_loc,          shininess);
+    glUniform3fv(viewPos_loc,           1, glm::value_ptr(cameraPos));
 
     bool isPaused     = false;   // чи зупинена анімація
     bool prevPKeyDown = false;   // попередній стан клавіші P (для детекції одиночного натискання)

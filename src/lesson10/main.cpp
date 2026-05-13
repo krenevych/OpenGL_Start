@@ -42,7 +42,7 @@ int main(void)
     }
     glfwSwapInterval(1);  // синхронізує рендер-цикл з частотою екрану
 
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
 
     std::string vertexShaderName = "res/shaders/cube.vert";
     std::string fragmentShaderName = "res/shaders/cube.frag";
@@ -50,43 +50,44 @@ int main(void)
         vertexShaderName,
         fragmentShaderName);
 
+    // Формат на вершину: position(3) + normal(3) + texCoords(2) = 8 floats
     float vertices[] = {
-        // -------- Передня грань --------
-        -1.0f, -1.0f, -1.0f,    /* текстурні координати */  0.0, 0.0,
-         1.0f, -1.0f, -1.0f,    /* текстурні координати */  1.0, 0.0,
-         1.0f,  1.0f, -1.0f,    /* текстурні координати */  1.0, 1.0,
-        -1.0f,  1.0f, -1.0f,    /* текстурні координати */  0.0, 1.0,
+        // -------- Передня грань (нормаль: 0, 0, -1) --------
+        -1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
+         1.0f, -1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
+         1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
+        -1.0f,  1.0f, -1.0f,    0.0f,  0.0f, -1.0f,    0.0f, 1.0f,
 
-       // -------- Задня грань --------
-        -1.0f, -1.0f, 1.0f,    /* текстурні координати */  0.0, 0.0,
-         1.0f, -1.0f, 1.0f,    /* текстурні координати */  1.0, 0.0,
-         1.0f,  1.0f, 1.0f,    /* текстурні координати */  1.0, 1.0,
-        -1.0f,  1.0f, 1.0f,    /* текстурні координати */  0.0, 1.0,
+        // -------- Задня грань (нормаль: 0, 0, 1) --------
+        -1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
+        -1.0f,  1.0f,  1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 1.0f,
 
-       // -------- Ліва грань (синя) --------
-        -1.0f, -1.0f, -1.0f,    /* текстурні координати */  0.0, 0.0,
-        -1.0f,  1.0f, -1.0f,    /* текстурні координати */  0.0, 1.0,
-        -1.0f,  1.0f,  1.0f,    /* текстурні координати */  1.0, 1.0,
-        -1.0f, -1.0f,  1.0f,    /* текстурні координати */  1.0, 0.0,
+        // -------- Ліва грань (нормаль: -1, 0, 0) --------
+        -1.0f, -1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+        -1.0f,  1.0f, -1.0f,   -1.0f,  0.0f,  0.0f,    0.0f, 1.0f,
+        -1.0f,  1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
+        -1.0f, -1.0f,  1.0f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
 
-       // -------- Права грань --------
-         1.0f, -1.0f, -1.0f,    /* текстурні координати */  0.0, 0.0,
-         1.0f,  1.0f, -1.0f,    /* текстурні координати */  0.0, 1.0,
-         1.0f,  1.0f,  1.0f,    /* текстурні координати */  1.0, 1.0,
-         1.0f, -1.0f,  1.0f,    /* текстурні координати */  1.0, 0.0,
+        // -------- Права грань (нормаль: 1, 0, 0) --------
+         1.0f, -1.0f, -1.0f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+         1.0f,  1.0f, -1.0f,    1.0f,  0.0f,  0.0f,    0.0f, 1.0f,
+         1.0f,  1.0f,  1.0f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
+         1.0f, -1.0f,  1.0f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
 
-       // -------- Нижня грань --------
-        -1.0f, -1.0f, -1.0f,    /* текстурні координати */  0.0, 0.0,
-        -1.0f, -1.0f,  1.0f,    /* текстурні координати */  1.0, 0.0,
-         1.0f, -1.0f,  1.0f,    /* текстурні координати */  1.0, 1.0,
-         1.0f, -1.0f, -1.0f,    /* текстурні координати */  0.0, 1.0,
+        // -------- Нижня грань (нормаль: 0, -1, 0) --------
+        -1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
+        -1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
+         1.0f, -1.0f,  1.0f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
+         1.0f, -1.0f, -1.0f,    0.0f, -1.0f,  0.0f,    0.0f, 1.0f,
 
-       // -------- Верхня грань --------
-        -1.0f,  1.0f, -1.0f,    /* текстурні координати */  0.0, 0.0,
-         1.0f,  1.0f, -1.0f,    /* текстурні координати */  1.0, 0.0,
-         1.0f,  1.0f,  1.0f,    /* текстурні координати */  1.0, 1.0,
-        -1.0f,  1.0f,  1.0f,    /* текстурні координати */  0.0, 1.0,
-   };
+        // -------- Верхня грань (нормаль: 0, 1, 0) --------
+        -1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
+         1.0f,  1.0f, -1.0f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f,
+        -1.0f,  1.0f,  1.0f,    0.0f,  1.0f,  0.0f,    0.0f, 1.0f,
+    };
 
     unsigned int indices[] = {
         0, 2, 1,    2, 0, 3,       // передня
@@ -112,25 +113,39 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind = activate
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // stride: 8 float-ів на вершину (3 позиція + 3 нормаль + 2 текстура)
+    const int STRIDE = 8 * sizeof(float);
+
     GLuint posAttribLocation = glGetAttribLocation(shaderProgram, "aPos");
     glVertexAttribPointer(
-        posAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-        3,                  // 3 компоненти: x, y, z
-        GL_FLOAT,           // тип даних
-        GL_FALSE,           // не нормалізувати
-        5 * sizeof(float),  // stride: 5 float-а на вершину
-        (void*)0            // offset: починаємо з 0
+        posAttribLocation,          // позиція атрибуту у шейдері
+        3,                          // 3 компоненти: x, y, z
+        GL_FLOAT,                   // тип даних
+        GL_FALSE,                   // не нормалізувати
+        STRIDE,                     // stride: 8 float-ів на вершину
+        (void*)0                    // offset: позиція починається з 0
     );
     glEnableVertexAttribArray(posAttribLocation);
 
+    GLuint normalAttribLocation = glGetAttribLocation(shaderProgram, "aNormal");
+    glVertexAttribPointer(
+        normalAttribLocation,       // позиція атрибуту у шейдері
+        3,                          // 3 компоненти: nx, ny, nz
+        GL_FLOAT,                   // тип даних
+        GL_FALSE,                   // не нормалізувати
+        STRIDE,                     // stride: 8 float-ів на вершину
+        (void*)(3 * sizeof(float))  // offset: нормаль після 3 float-ів позиції
+    );
+    glEnableVertexAttribArray(normalAttribLocation);
+
     GLuint textureCoordsAttribLocation = glGetAttribLocation(shaderProgram, "aUV");
     glVertexAttribPointer(
-        textureCoordsAttribLocation,                  // знайдена командою glGetAttribLocation позиція атрибуту у шейдері
-        2,                  // 2 компоненти: u, v
-        GL_FLOAT,           // тип даних
-        GL_FALSE,           // не нормалізувати
-        5 * sizeof(float),  // stride: 5 float-а на вершину
-        (void*)(3 * sizeof(float))        // offset
+        textureCoordsAttribLocation,        // позиція атрибуту у шейдері
+        2,                                  // 2 компоненти: u, v
+        GL_FLOAT,                           // тип даних
+        GL_FALSE,                           // не нормалізувати
+        STRIDE,                             // stride: 8 float-ів на вершину
+        (void*)(6 * sizeof(float))          // offset: UV після 3+3 float-ів
     );
     glEnableVertexAttribArray(textureCoordsAttribLocation);
 

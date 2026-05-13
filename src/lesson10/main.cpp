@@ -160,9 +160,6 @@ int main(void)
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    // glCullFace(GL_FRONT);
-    // glFrontFace(GL_CCW); // GL_CW.
-    // glFrontFace(GL_CW); // GL_CW.
 
     unsigned int texture0 = loadTexture("res/textures/brick.jpg");
     GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");

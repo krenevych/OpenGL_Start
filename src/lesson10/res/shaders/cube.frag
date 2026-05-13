@@ -40,9 +40,10 @@ void main() {
     vec3 specular   = uSpecularStrength * spec * uLightColor;
 
     // --- Фінальний колір ---
-//    vec3 lighting = ambient + diffuse + specular;
-//    vec3 lighting = ambient;
-    vec3 lighting = diffuse;
-//    vec3 lighting = specular;
+    vec3 lighting = vec3(0.0, 0.0, 0.0);
+    //    vec3 lighting = ambient + diffuse + specular;
+    lighting += ambient;
+    lighting += diffuse;
+    lighting += specular;
     FragColor = vec4(lighting * vec3(texColor), texColor.a);
 }

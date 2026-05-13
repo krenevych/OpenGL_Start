@@ -168,7 +168,7 @@ int main(void)
 
     auto model = glm::mat4(1.0f);
 
-    glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, -8.0f);
+    glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, -5.0f);
 
     glm::mat4 view = glm::lookAt(
         cameraPos,                   // позиція камери
@@ -189,9 +189,8 @@ int main(void)
     unsigned int texture0 = loadTexture("res/textures/brick.jpg");
     GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
 
-
     // Параметри напрямленого світла (задаємо один раз)
-    glm::vec3 lightDir   = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
+    glm::vec3 lightDir   = glm::normalize(glm::vec3(-1.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                   // біле світло
     float ambientStrength  = 0.15f;  // фонова складова
     float specularStrength = 0.6f;   // дзеркальна складова
@@ -205,6 +204,9 @@ int main(void)
     glUniform1f(shininess_loc,         shininess);
     glUniform3fv(viewPos_loc,          1, glm::value_ptr(cameraPos));
 
+    bool isPaused     = false;   // чи зупинена анімація
+    bool prevPKeyDown = false;   // попередній стан клавіші P (для детекції одиночного натискання)
+
     /* Loop until the user closes the window */
     do
     {
@@ -212,6 +214,13 @@ int main(void)
         if (t >= 1.0f || t <= 0.0f) {
             deltaTime = -deltaTime;
         }
+
+        // Перемикання паузи по клавіші P / p (спрацьовує лише на момент натискання)
+        bool currPKeyDown = glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS;
+        if (currPKeyDown && !prevPKeyDown) {
+            isPaused = !isPaused;
+        }
+        prevPKeyDown = currPKeyDown;
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // очищаємо не лише полотно, на якому малюємо, але й буфер глибини
@@ -221,7 +230,10 @@ int main(void)
         glBindTexture(GL_TEXTURE_2D, texture0);
         glUniform1i(texture0_loc, 0);
 
-        model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        // Обертаємо куб лише якщо анімація не на паузі
+        if (!isPaused) {
+            model = glm::rotate(model, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        }
         glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(proj_loc, 1, GL_FALSE, glm::value_ptr(projection));

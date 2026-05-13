@@ -170,6 +170,8 @@ int main(void)
     glDeleteVertexArrays(1, &VAO);
     glDeleteProgram(shaderProgram);
     glDeleteTextures(1, &texture0);
+    glDeleteTextures(1, &texture1);
+    glDeleteTextures(1, &texture2);
 
     glfwTerminate();
     return 0;

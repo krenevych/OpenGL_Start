@@ -152,16 +152,26 @@ int main(void)
     glBindVertexArray(0); // деактивувати VAO
 
     GLint model_loc = glGetUniformLocation(shaderProgram, "uModel");
-    GLint view_loc = glGetUniformLocation(shaderProgram, "uView");
-    GLint proj_loc = glGetUniformLocation(shaderProgram, "uProjection");
+    GLint view_loc  = glGetUniformLocation(shaderProgram, "uView");
+    GLint proj_loc  = glGetUniformLocation(shaderProgram, "uProjection");
+
+    // Uniform-локації для напрямленого світла (Phong)
+    GLint lightDir_loc         = glGetUniformLocation(shaderProgram, "uLightDir");
+    GLint lightColor_loc       = glGetUniformLocation(shaderProgram, "uLightColor");
+    GLint ambientStrength_loc  = glGetUniformLocation(shaderProgram, "uAmbientStrength");
+    GLint specularStrength_loc = glGetUniformLocation(shaderProgram, "uSpecularStrength");
+    GLint shininess_loc        = glGetUniformLocation(shaderProgram, "uShininess");
+    GLint viewPos_loc          = glGetUniformLocation(shaderProgram, "uViewPos");
 
     float t = 0.0f;
     float deltaTime = 1.0f / 60.0f;
 
     auto model = glm::mat4(1.0f);
 
+    glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, -8.0f);
+
     glm::mat4 view = glm::lookAt(
-        glm::vec3(0.0f, 2.0f, -5.0f), // позиція камери
+        cameraPos,                   // позиція камери
         glm::vec3(0.0f, 0.0f, 0.0f), // куди дивимось
         glm::vec3(0.0f, 1.0f, 0.0f) // вектор вгору
     );
@@ -178,6 +188,22 @@ int main(void)
 
     unsigned int texture0 = loadTexture("res/textures/brick.jpg");
     GLint texture0_loc = glGetUniformLocation(shaderProgram, "uTexture0");
+
+
+    // Параметри напрямленого світла (задаємо один раз)
+    glm::vec3 lightDir   = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)); // напрямок ВІД джерела
+    glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);                   // біле світло
+    float ambientStrength  = 0.15f;  // фонова складова
+    float specularStrength = 0.6f;   // дзеркальна складова
+    float shininess        = 32.0f;  // показник блиску
+
+    glUseProgram(shaderProgram);
+    glUniform3fv(lightDir_loc,         1, glm::value_ptr(lightDir));
+    glUniform3fv(lightColor_loc,       1, glm::value_ptr(lightColor));
+    glUniform1f(ambientStrength_loc,   ambientStrength);
+    glUniform1f(specularStrength_loc,  specularStrength);
+    glUniform1f(shininess_loc,         shininess);
+    glUniform3fv(viewPos_loc,          1, glm::value_ptr(cameraPos));
 
     /* Loop until the user closes the window */
     do

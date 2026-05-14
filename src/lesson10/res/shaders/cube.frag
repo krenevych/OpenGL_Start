@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec3 vNormal;    // нормаль у світовому просторі
-in vec3 vFragPos;   // позиція фрагмента у світовому просторі
+in vec3 vWorldPos;   // позиція фрагмента у світовому просторі
 
 // Напрямлене світло (directional light)
 uniform vec3 uLightDir;     // напрямок ВІД джерела світла (у світовому просторі)
@@ -14,7 +14,7 @@ uniform vec3  uMaterialSpecular;  // дзеркальний колір мате�
 uniform float uShininess;         // показник блиску
 
 // Позиція камери (для розрахунку specular)
-uniform vec3 uViewPos;
+uniform vec3 uCameraPos;
 
 out vec4 FragColor;
 
@@ -29,7 +29,7 @@ void main() {
     vec3 diffuse  = uLightColor * diff * uMaterialDiffuse;
 
     // --- Specular (дзеркальне відбиття, Phong) ---
-    vec3 viewDir    = normalize(uViewPos - vFragPos);
+    vec3 viewDir    = normalize(uCameraPos - vWorldPos);
     vec3 reflectDir = reflect(-lightDir, norm);     // відбитий вектор
     float spec      = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
     vec3 specular   = uLightColor * spec * uMaterialSpecular;

@@ -162,7 +162,7 @@ int main(void)
     GLint diffuseStrength_loc   = glGetUniformLocation(shaderProgram, "uDiffuseStrength");
     GLint specularStrength_loc  = glGetUniformLocation(shaderProgram, "uSpecularStrength");
     GLint shininess_loc         = glGetUniformLocation(shaderProgram, "uShininess");
-    GLint viewPos_loc           = glGetUniformLocation(shaderProgram, "uViewPos");
+    GLint viewPos_loc           = glGetUniformLocation(shaderProgram, "uCameraPos");
 
     float t = 0.0f;
     float deltaTime = 1.0f / 60.0f;

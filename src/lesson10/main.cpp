@@ -146,7 +146,7 @@ int main(void)
     // Uniform-локації для напрямленого світла
     GLint lightDir_loc   = glGetUniformLocation(shaderProgram, "uLightDir");
     GLint lightColor_loc = glGetUniformLocation(shaderProgram, "uLightColor");
-    GLint viewPos_loc    = glGetUniformLocation(shaderProgram, "uViewPos");
+    GLint viewPos_loc    = glGetUniformLocation(shaderProgram, "uCameraPos");
 
     // Uniform-локації для матеріалу
     GLint materialAmbient_loc  = glGetUniformLocation(shaderProgram, "uMaterialAmbient");

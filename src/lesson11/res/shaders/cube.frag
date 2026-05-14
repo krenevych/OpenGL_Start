@@ -2,7 +2,7 @@
 
 in vec2 vTexCoords;
 in vec3 vNormal;    // нормаль у світовому просторі
-in vec3 vFragPos;   // позиція фрагмента у світовому просторі
+in vec3 vWorldPos;   // позиція фрагмента у світовому просторі
 
 // Текстура
 uniform sampler2D uTexture0;
@@ -18,7 +18,7 @@ uniform float uSpecularStrength;    // сила дзеркального від�
 uniform float uShininess;           // показник блиску (чим більше — тим вужче пляма)
 
 // Позиція камери (для розрахунку specular)
-uniform vec3 uViewPos;
+uniform vec3 uCameraPos;
 
 out vec4 FragColor;
 
@@ -35,7 +35,7 @@ void main() {
     vec3 diffuse  = uDiffuseStrength * diff * uLightColor;
 
     // --- Specular (дзеркальне відбиття, Phong) ---
-    vec3 viewDir    = normalize(uViewPos - vFragPos);
+    vec3 viewDir    = normalize(uCameraPos - vWorldPos);
     vec3 reflectDir = reflect(-lightDir, norm);     // відбитий вектор
     float spec      = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
     vec3 specular   = uSpecularStrength * spec * uLightColor;
